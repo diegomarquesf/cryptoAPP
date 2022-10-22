@@ -20,6 +20,8 @@ public class CoinRepository {
 	private static String SELECT_ALL = "select name, sum(quantity) as quantity from coin group by name";
 	private static String SELECT_BY_NAME = "select * from coin where name = ?";
 	private static String DELETE = "delete from coin where id = ?";
+	private static String UPDATE = "update coin set name = ? , price = ?, quantity = ? where id = ?";
+	
 	private JdbcTemplate jdbcTemplate;
 	
 	public CoinRepository(JdbcTemplate jdbcTemplate ) {
@@ -75,4 +77,16 @@ public class CoinRepository {
 	public int delete(int id) {
 		return jdbcTemplate.update(DELETE, id);
 	}
+	
+	public Coin update(Coin coin) {
+		Object[] attr = new Object[] {
+				coin.getName(),
+				coin.getPrice(),
+				coin.getQuantity(),
+				coin.getId()
+		};
+		jdbcTemplate.update(UPDATE, attr);
+		return coin;
+	}
+
 }
